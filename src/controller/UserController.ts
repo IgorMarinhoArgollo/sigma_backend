@@ -8,7 +8,7 @@ export default class UserController {
     this.userService = userService;
 
     this.getAllUsers = this.getAllUsers.bind(this);
-    this.getUserById = this.getUserById.bind(this);
+    this.getUserByEmail = this.getUserByEmail.bind(this);
     this.createUser = this.createUser.bind(this);
     this.updateUserById = this.updateUserById.bind(this);
     this.deleteUserById = this.deleteUserById.bind(this);
@@ -23,9 +23,9 @@ export default class UserController {
     }
   }
 
-  public async getUserById(req: Request, res: Response, _next: NextFunction) {
+  public async getUserByEmail(req: Request, res: Response, _next: NextFunction) {
     try {
-      const user = await this.userService.getUserById(req.params.id);
+      const user = await this.userService.getUserByEmail(req.params.email);
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }

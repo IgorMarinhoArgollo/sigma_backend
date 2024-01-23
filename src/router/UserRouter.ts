@@ -14,7 +14,7 @@ export default class UserRouter {
   private setupRoutes() {
     this.router.get('/', this.userController.getAllUsers);
 
-    this.router.get('/:id', this.userController.getUserById);
+    this.router.get('/:email', this.userController.getUserByEmail);
 
     this.router.post('/', this.userController.createUser);
 

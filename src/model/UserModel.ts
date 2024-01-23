@@ -34,14 +34,17 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+      immutable: true,
     },
     viewPermission: {
       type: viewPermissionSchema,
       required: true,
+      immutable: true,
     },
     editPermission: {
       type: [editPermissionSchema],
       required: true,
+      immutable: true,
     },
   },
   { timestamps: true, versionKey: false }

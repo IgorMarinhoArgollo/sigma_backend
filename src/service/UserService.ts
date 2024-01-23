@@ -12,8 +12,8 @@ export default class UserService {
     return this.userModel.find();
   }
 
-  public async getUserById(id: string): Promise<IUser | null> {
-    return this.userModel.findById(id);
+  public async getUserByEmail(email: string): Promise<IUser | null> {
+    return this.userModel.findOne({"email": email});
   }
 
   public async createUser(userData: IUser): Promise<IUser> {
