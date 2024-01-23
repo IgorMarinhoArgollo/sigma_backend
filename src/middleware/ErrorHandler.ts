@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import CustomError from '../interface/CustomError';
+import ICustomError from '../interface/ICustomError';
 
 class ErrorHandler {
-  static handle(err: CustomError, req: Request, res: Response, _next: NextFunction): void {
+  static handle(err: ICustomError, req: Request, res: Response, _next: NextFunction): void {
     console.error(err);
 
     const status = err.status || 500;
