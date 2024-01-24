@@ -37,7 +37,9 @@ export default class UserController {
 
   public async createUser(req: Request, res: Response, _next: NextFunction) {
     try {
-      const newUser = await this.userService.createUser(req.body);
+      const { user, permissions } = req.body
+      const { firstname, lastname, email, password } = user;
+      const newUser = await this.userService.createUser(firstname, lastname, email, password, permissions);
       res.status(201).json(newUser);
     } catch (error) {
       res.status(500).json({ error: 'Internal Server Error' });

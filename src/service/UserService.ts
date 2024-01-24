@@ -1,5 +1,6 @@
 import { IUser } from '../interface/IUser';
 import UserModel from '../model/UserModel';
+import BCrypt from '../helper/BCrypt';
 
 export default class UserService {
   private userModel;
@@ -66,15 +67,35 @@ export default class UserService {
     return mappedUser;
   }
 
-  public async createUser(userData: unknown): Promise<unknown> {
-    return this.userModel.create(userData);
-  }
-
+  
   public async updateUserByEmail(email: string, newData: Partial<IUser>): Promise<IUser | null> {
     return this.userModel.findOneAndUpdate({"email": email}, newData, { new: true });
   }
-
+  
   public async deleteUserById(id: string): Promise<IUser | null> {
     return this.userModel.findByIdAndDelete(id);
   }
+
+
+  public async createUser(firstname: string, lastname: string, email: string, password: string, permissions: string[]): Promise<IUser> {
+    try {
+      const userData: IUser = {
+        user: {
+          firstname: firstname,
+          lastname: lastname,
+          email: email,
+          password: await BCrypt.encrypt(password),
+        },
+        permissions: permissions,
+      };
+
+      const createdUser = await this.userModel.create(userData);
+
+      return createdUser.toObject();
+    } catch (error) {
+      console.error('Erro ao criar usuário:', error);
+      throw new Error('Erro ao criar usuário.');
+    }
+  }
+
 }
