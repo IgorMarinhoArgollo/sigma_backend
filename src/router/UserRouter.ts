@@ -13,14 +13,12 @@ export default class UserRouter {
   }
 
   private setupRoutes() {
-    this.router.get('/', this.userController.getAllUsers);
 
-    // While login in I can send the Id
-    this.router.get('/:id', authMiddleware.handle, this.userController.getUserById); 
+    this.router.get('/', authMiddleware.handle, this.userController.getUser); 
 
     this.router.post('/', this.userController.createUser);
 
-    this.router.put('/:email', authMiddleware.handle, this.userController.updateUserByEmail); //
+    this.router.put('/', authMiddleware.handle, this.userController.updateUser); //
 
     this.router.delete('/:id', this.userController.deleteUserById);
   }
