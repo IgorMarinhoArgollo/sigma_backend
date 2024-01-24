@@ -8,9 +8,9 @@ export default class UserController {
     this.userService = userService;
 
     this.getAllUsers = this.getAllUsers.bind(this);
-    this.getUserByEmail = this.getUserByEmail.bind(this);
+    this.getUserById = this.getUserById.bind(this);
     this.createUser = this.createUser.bind(this);
-    this.updateUserById = this.updateUserById.bind(this);
+    this.updateUserByEmail = this.updateUserByEmail.bind(this);
     this.deleteUserById = this.deleteUserById.bind(this);
   }
 
@@ -23,9 +23,9 @@ export default class UserController {
     }
   }
 
-  public async getUserByEmail(req: Request, res: Response, _next: NextFunction) {
+  public async getUserById(req: Request, res: Response, _next: NextFunction) {
     try {
-      const user = await this.userService.getUserByEmail(req.params.email);
+      const user = await this.userService.getUserById(req.params.id);
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
@@ -44,10 +44,10 @@ export default class UserController {
     }
   }
 
-  public async updateUserById(req: Request, res: Response, _next: NextFunction) {
+  public async updateUserByEmail(req: Request, res: Response, _next: NextFunction) {
     try {
-      const updatedUser = await this.userService.updateUserById(
-        req.params.id,
+      const updatedUser = await this.userService.updateUserByEmail(
+        req.params.email,
         req.body
       );
       if (!updatedUser) {

@@ -9,19 +9,69 @@ export default class UserService {
   }
 
   public async getAllUsers(): Promise<IUser[]> {
-    return this.userModel.find();
+    const users = await this.userModel.find({}, { _id: 0, __v: 0, 'user.password': 0 }).lean();
+
+    const mappedUsers: IUser[] = [];
+
+    users.forEach((user) => {
+      const allowView: string[] = [];
+
+      user.permissions.forEach((permission) => {
+        const parts = permission.split(':');
+        if (parts[parts.length - 1] === 'view') {
+          allowView.push(parts[parts.length - 2]);
+        }
+      });
+
+      const mappedUser: IUser = {
+        user: {
+          firstname: allowView.includes('firstname') ? user.user?.firstname : undefined,
+          lastname: allowView.includes('lastname') ? user.user?.lastname : undefined,
+          email: allowView.includes('email') ? user.user?.email : undefined,
+        },
+        permissions: user.permissions,
+      };
+
+      mappedUsers.push(mappedUser);
+    });
+
+    return mappedUsers;
   }
 
-  public async getUserByEmail(email: string): Promise<IUser | null> {
-    return this.userModel.findOne({"email": email});
+  public async getUserById(id: string): Promise<IUser | null> {
+    const user = await this.userModel.findById(id, { _id: 0, __v: 0, 'user.password': 0 }).lean();
+
+    if (!user) {
+      return null;
+    }
+    
+    const allowView: string[] = [];
+
+    user.permissions.forEach((permission) => {
+      const parts = permission.split(':');
+      if (parts[parts.length - 1] === 'view') {
+        allowView.push(parts[parts.length - 2]);
+      }
+    });
+
+    const mappedUser: IUser = {
+      user: {
+        firstname: allowView.includes('firstname') ? user.user?.firstname : undefined,
+        lastname: allowView.includes('lastname') ? user.user?.lastname : undefined,
+        email: allowView.includes('email') ? user.user?.email : undefined,
+      },
+      permissions: user.permissions,
+    };
+
+    return mappedUser;
   }
 
-  public async createUser(userData: IUser): Promise<IUser> {
+  public async createUser(userData: unknown): Promise<unknown> {
     return this.userModel.create(userData);
   }
 
-  public async updateUserById(id: string, newData: Partial<IUser>): Promise<IUser | null> {
-    return this.userModel.findByIdAndUpdate(id, newData, { new: true });
+  public async updateUserByEmail(email: string, newData: Partial<IUser>): Promise<IUser | null> {
+    return this.userModel.findOneAndUpdate({"email": email}, newData, { new: true });
   }
 
   public async deleteUserById(id: string): Promise<IUser | null> {

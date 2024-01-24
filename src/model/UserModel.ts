@@ -1,55 +1,33 @@
-import mongoose, { Schema } from 'mongoose';
-import { IUser } from '../interface/IUser';
+import mongoose from 'mongoose';
 
-
-const viewPermissionSchema = new Schema({
-  firstName: Boolean,
-  lastName: Boolean,
-  email: Boolean,
-  password: Boolean,
-}, { _id: false });
-
-const editPermissionSchema = new Schema({
-  firstName: Boolean,
-  lastName: Boolean,
-  email: Boolean,
-  password: Boolean,
-}, { _id: false });
-
-const userSchema = new Schema(
-  {
-    firstName: {
+const userSchema = new mongoose.Schema({
+  user: {
+    firstname: {
       type: String,
       required: true,
+      nullable: false
     },
-    lastName: {
+    lastname: {
       type: String,
       required: true,
+      nullable: false
     },
     email: {
       type: String,
       required: true,
-      unique: true,
+      nullable: false
     },
     password: {
       type: String,
       required: true,
-      immutable: true,
-    },
-    viewPermission: {
-      type: viewPermissionSchema,
-      required: true,
-      immutable: true,
-    },
-    editPermission: {
-      type: [editPermissionSchema],
-      required: true,
-      immutable: true,
-    },
+      nullable: false
+    }
   },
-  { timestamps: true, versionKey: false }
-);
+  permissions: {
+    type: [String],
+    default: []
+  }
+});
+const UserModel = mongoose.model('User', userSchema);
 
-
-const UserModel = mongoose.model<IUser>('User', userSchema);
 export default UserModel;
