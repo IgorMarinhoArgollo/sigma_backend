@@ -10,6 +10,9 @@ import UserModel from './model/UserModel';
 import LoginRouter from './router/LoginRouter';
 import LoginController from './controller/LoginController';
 import LoginService from './service/LoginService';
+import limiter from './helper/RateLimiter';
+import helmet from 'helmet';
+
 
 export class App {
   private app: Express;
@@ -26,6 +29,9 @@ export class App {
 
   constructor() {
     this.app = express();
+    this.app.use(helmet())
+    this.app.use(limiter);
+
     this.dbConnection = MongoDBConnection.getInstance();
     this.connectToDatabase();
     this.config();
