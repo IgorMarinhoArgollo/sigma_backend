@@ -18,6 +18,27 @@ The original challenge was a full-stack project, and considering the independenc
 ### :earth_americas: Links
 <a href="https://sigmabackend.onrender.com">Base</a><br>
 
+### User for testing
+    - user1
+    email: user1@user1.com
+    password: secret1
+    firstname: user1
+    lastname: user1
+    
+    - user2
+    email: user2@user2.com
+    password: secret2
+    firstname: user2
+    lastname: user2
+
+    - user3
+    email: user3@user3.com
+    password: secret3
+    firstname: user3
+    lastname: user3
+
+  <br>
+
 ### Routes
   - **Login:**
     - **Method:** PUT
