@@ -93,7 +93,7 @@ The original challenge was a full-stack project, and considering the independenc
   #### 1  Clone the repository (via SSH)
   On terminal:
   
-    git clone git@github.com:IgorMarinhoArgollo/talker-manager.git
+    git clone git@github.com:IgorMarinhoArgollo/sigma_backend.git
   
   <br/>
   
